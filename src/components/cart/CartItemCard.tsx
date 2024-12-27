@@ -11,6 +11,8 @@ interface CartItemCardProps {
 }
 
 const CartItemCard = ({ item, onUpdateQuantity, onRemove }: CartItemCardProps) => {
+  const packType = sessionStorage.getItem('selectedPackType') || 'aucun';
+  
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -30,10 +32,10 @@ const CartItemCard = ({ item, onUpdateQuantity, onRemove }: CartItemCardProps) =
             <h3 className="text-lg font-serif text-[#1A1F2C] mb-1 hover:text-[#700100] transition-colors cursor-pointer">
               {item.name}
             </h3>
-            {item.fromPack && (
+            {packType !== 'aucun' && (
               <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-[#700100]/10 text-[#700100]">
                 <Package size={12} />
-                Article de Pack
+                {packType}
               </span>
             )}
           </div>

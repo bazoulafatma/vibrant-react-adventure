@@ -24,6 +24,18 @@ const GiftApp = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Get pack type from URL
+    const packType = window.location.pathname.split('/').pop();
+    if (packType) {
+      const formattedPackType = packType === 'packpremuim' ? 'Pack Premium' :
+                               packType === 'packprestige' ? 'Pack Prestige' :
+                               packType === 'packtrio' ? 'Pack Trio' :
+                               packType === 'packduo' ? 'Pack Duo' :
+                               packType === 'packminiduo' ? 'Pack Mini Duo' :
+                               packType === 'packmono' ? 'Pack Mono' : 'aucun';
+      sessionStorage.setItem('selectedPackType', formattedPackType);
+    }
+    
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 2000);
