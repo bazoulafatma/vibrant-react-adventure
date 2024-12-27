@@ -1,29 +1,54 @@
+import { motion } from "framer-motion";
+import { useState } from "react";
+import { useToast } from "../hooks/use-toast";
+
 export const Newsletter = () => {
+  const [email, setEmail] = useState("");
+  const { toast } = useToast();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Success",
+      description: "Thank you for subscribing to our newsletter!",
+    });
+    setEmail("");
+  };
+
   return (
-    <section className="py-24 bg-pearl">
-      <div className="max-w-3xl mx-auto px-6 text-center">
-        <span className="inline-block px-3 py-1 mb-4 text-sm bg-sand/20 text-graphite rounded-full">
-          Stay Updated
-        </span>
-        <h2 className="text-4xl font-bold text-neutral-dark mb-6">
-          Join Our Newsletter
-        </h2>
-        <p className="text-neutral-dark/70 mb-8">
-          Be the first to know about our latest updates and exclusive offers.
-        </p>
-        <form className="flex flex-col md:flex-row gap-4 max-w-xl mx-auto">
-          <input
-            type="email"
-            placeholder="Enter your email"
-            className="flex-1 px-6 py-4 rounded-full border border-neutral-light focus:outline-none focus:ring-2 focus:ring-sage/20 transition-all duration-300"
-          />
-          <button
-            type="submit"
-            className="px-8 py-4 bg-neutral-dark text-white rounded-full hover:bg-graphite transition-colors duration-300"
-          >
-            Subscribe
-          </button>
-        </form>
+    <section className="py-24">
+      <div className="container mx-auto px-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="max-w-2xl mx-auto text-center"
+        >
+          <h2 className="text-3xl md:text-4xl font-display font-bold mb-4">
+            Stay Updated
+          </h2>
+          <p className="text-muted-foreground mb-8">
+            Subscribe to our newsletter for the latest updates and exclusive
+            content.
+          </p>
+          <form onSubmit={handleSubmit} className="flex gap-4 max-w-md mx-auto">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="flex-1 px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-primary"
+              required
+            />
+            <button
+              type="submit"
+              className="px-6 py-3 bg-primary text-primary-foreground rounded-lg hover-lift whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </form>
+        </motion.div>
       </div>
     </section>
   );
