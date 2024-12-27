@@ -28,7 +28,7 @@ const OrderPreviewPage = () => {
     }
 
     const { items, userDetails } = state.orderDetails;
-    const packType = sessionStorage.getItem('selectedPackType') || null;
+    const packType = sessionStorage.getItem('selectedPackType') || 'aucun';
 
     try {
       // Format items with personalization
@@ -42,7 +42,8 @@ const OrderPreviewPage = () => {
         image: item.image,
         size: item.size || '-',
         color: item.color || '-',
-        personalization: item.personalization || '-'
+        personalization: item.personalization || '-',
+        pack: packType
       }));
 
       // Prepare order submission data
@@ -58,9 +59,6 @@ const OrderPreviewPage = () => {
           zip_code: userDetails.zipCode
         },
         items: formattedItems,
-        items_pack: {
-          items_pack: packType
-        },
         price_details: {
           subtotal,
           shipping_cost: shipping,
@@ -69,7 +67,7 @@ const OrderPreviewPage = () => {
           final_total: finalTotal
         },
         payment: {
-          method: 'cash',
+          method: 'cash' as const,
           status: 'not yet',
           konnect_payment_url: '-',
           completed_at: new Date().toISOString()
@@ -86,7 +84,7 @@ const OrderPreviewPage = () => {
 
       // Clear cart and show success message
       clearCart();
-      sessionStorage.removeItem('selectedPackType'); // Clear pack type after order
+      sessionStorage.removeItem('selectedPackType');
       
       toast({
         title: "Commande confirmée",

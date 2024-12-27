@@ -17,6 +17,7 @@ interface OrderItem {
   size?: string;
   color?: string;
   personalization?: string;
+  pack: string;
 }
 
 interface PriceDetails {
@@ -40,15 +41,10 @@ interface OrderStatus {
   delivered_at: string;
 }
 
-interface ItemsPack {
-  items_pack: string | null;
-}
-
 interface OrderSubmission {
   order_id: string;
   user_details: UserDetails;
   items: OrderItem[];
-  items_pack: ItemsPack;
   price_details: PriceDetails;
   payment: PaymentDetails;
   order_status: OrderStatus;

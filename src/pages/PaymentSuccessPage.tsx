@@ -16,20 +16,16 @@ const PaymentSuccessPage = () => {
   useEffect(() => {
     const handlePaymentSuccess = async () => {
       try {
-        // Get pending order from sessionStorage
         const pendingOrderString = sessionStorage.getItem('pendingOrder');
         if (pendingOrderString) {
           const pendingOrder = JSON.parse(pendingOrderString);
           console.log('Processing pending order:', pendingOrder);
           
-          // Update stock
           await updateProductStock(pendingOrder.cartItems);
 
-          // Get user details from sessionStorage
           const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '{}');
-          const packType = sessionStorage.getItem('selectedPackType') || null;
+          const packType = sessionStorage.getItem('selectedPackType') || 'aucun';
 
-          // Format items with personalization
           const formattedItems = pendingOrder.cartItems.map((item: any) => ({
             id: item.id,
             name: item.personalization 
@@ -40,10 +36,10 @@ const PaymentSuccessPage = () => {
             image: item.image,
             size: item.size || '-',
             color: item.color || '-',
-            personalization: item.personalization || '-'
+            personalization: item.personalization || '-',
+            pack: packType
           }));
 
-          // Prepare order submission data
           const orderData = {
             order_id: pendingOrder.orderId,
             user_details: {
@@ -56,9 +52,6 @@ const PaymentSuccessPage = () => {
               zip_code: userDetails.zipCode
             },
             items: formattedItems,
-            items_pack: {
-              items_pack: packType
-            },
             price_details: {
               subtotal,
               shipping_cost: shipping,
@@ -79,15 +72,12 @@ const PaymentSuccessPage = () => {
             }
           };
 
-          // Submit order
           await submitOrder(orderData);
           
-          // Clear pending order and pack type
           sessionStorage.removeItem('pendingOrder');
           sessionStorage.removeItem('selectedPackType');
         }
 
-        // Clear the cart
         clearCart();
       } catch (error) {
         console.error('Error processing payment success:', error);
