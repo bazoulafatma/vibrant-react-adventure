@@ -31,7 +31,6 @@ const OrderPreviewPage = () => {
     const packType = sessionStorage.getItem('selectedPackType') || 'aucun';
 
     try {
-      // Format items with personalization
       const formattedItems = items.map((item: any) => ({
         id: item.id,
         name: item.personalization 
@@ -46,7 +45,6 @@ const OrderPreviewPage = () => {
         pack: packType
       }));
 
-      // Prepare order submission data
       const orderData = {
         order_id: `ORDER-${Date.now()}`,
         user_details: {
@@ -79,10 +77,8 @@ const OrderPreviewPage = () => {
         }
       };
 
-      // Submit order
       await submitOrder(orderData);
-
-      // Clear cart and show success message
+      
       clearCart();
       sessionStorage.removeItem('selectedPackType');
       
