@@ -28,6 +28,7 @@ const OrderPreviewPage = () => {
     }
 
     const { items, userDetails } = state.orderDetails;
+    const packType = sessionStorage.getItem('selectedPackType') || null;
 
     try {
       // Format items with personalization
@@ -57,6 +58,9 @@ const OrderPreviewPage = () => {
           zip_code: userDetails.zipCode
         },
         items: formattedItems,
+        items_pack: {
+          items_pack: packType
+        },
         price_details: {
           subtotal,
           shipping_cost: shipping,
@@ -82,6 +86,8 @@ const OrderPreviewPage = () => {
 
       // Clear cart and show success message
       clearCart();
+      sessionStorage.removeItem('selectedPackType'); // Clear pack type after order
+      
       toast({
         title: "Commande confirmée",
         description: "Votre commande a été confirmée avec succès",
@@ -108,6 +114,7 @@ const OrderPreviewPage = () => {
   }
 
   const { items, userDetails } = state.orderDetails;
+  const packType = sessionStorage.getItem('selectedPackType');
 
   return (
     <div className="min-h-screen bg-[#F1F0FB]">
@@ -128,10 +135,15 @@ const OrderPreviewPage = () => {
 
           <h1 className="text-3xl font-serif text-[#1A1F2C] mb-8">
             Aperçu de votre commande
+            {packType && (
+              <span className="ml-2 text-lg text-[#700100]">
+                ({packType})
+              </span>
+            )}
           </h1>
           
           <DeliveryDetails userDetails={userDetails} />
-          <OrderItems items={items} />
+          <OrderItems items={items} packType={packType} />
           <OrderSummary 
             subtotal={subtotal}
             shipping={shipping}

@@ -2,13 +2,14 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { CartItem } from '@/components/cart/CartProvider';
 import { getPersonalizations } from '@/utils/personalizationStorage';
-import { Tag, Package2, Ruler } from 'lucide-react';
+import { Tag, Package2, Ruler, Gift } from 'lucide-react';
 
 interface OrderItemsProps {
   items: CartItem[];
+  packType?: string | null;
 }
 
-const OrderItems = ({ items }: OrderItemsProps) => {
+const OrderItems = ({ items, packType }: OrderItemsProps) => {
   const personalizations = getPersonalizations();
 
   return (
@@ -17,7 +18,15 @@ const OrderItems = ({ items }: OrderItemsProps) => {
       animate={{ opacity: 1, y: 0 }}
       className="bg-white rounded-lg shadow-sm p-6 mb-6"
     >
-      <h2 className="text-xl font-medium mb-4 text-[#471818]">Articles commandés</h2>
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-medium text-[#471818]">Articles commandés</h2>
+        {packType && (
+          <div className="flex items-center gap-2 bg-[#700100]/10 px-3 py-1.5 rounded-full">
+            <Gift className="w-4 h-4 text-[#700100]" />
+            <span className="text-sm font-medium text-[#700100]">{packType}</span>
+          </div>
+        )}
+      </div>
       <div className="space-y-6">
         {items.map((item, index) => (
           <motion.div 

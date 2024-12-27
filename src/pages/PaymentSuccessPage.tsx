@@ -27,6 +27,7 @@ const PaymentSuccessPage = () => {
 
           // Get user details from sessionStorage
           const userDetails = JSON.parse(sessionStorage.getItem('userDetails') || '{}');
+          const packType = sessionStorage.getItem('selectedPackType') || null;
 
           // Format items with personalization
           const formattedItems = pendingOrder.cartItems.map((item: any) => ({
@@ -55,6 +56,9 @@ const PaymentSuccessPage = () => {
               zip_code: userDetails.zipCode
             },
             items: formattedItems,
+            items_pack: {
+              items_pack: packType
+            },
             price_details: {
               subtotal,
               shipping_cost: shipping,
@@ -78,8 +82,9 @@ const PaymentSuccessPage = () => {
           // Submit order
           await submitOrder(orderData);
           
-          // Clear pending order
+          // Clear pending order and pack type
           sessionStorage.removeItem('pendingOrder');
+          sessionStorage.removeItem('selectedPackType');
         }
 
         // Clear the cart
